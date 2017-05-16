@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "cookie injector",
+  "version": "1.0",
+  "description": "Inject Cookie from document.cookie",
+
+  "applications": {
+    "gecko": {
+      "id": "admin@ecma.io"
+    }
+  },
+
+  "icons": {
+    "48": "icons/injector.png"
+  },
+
+  "permissions": [
+    "cookies",
+    "tabs",
+    "<all_urls>"
+  ],
+
+  "background": {
+    "scripts": ["background/cookies.js"]
+  },
+  "browser_action": {
+    "default_icon": "icons/injector.png",
+    "default_title": "Inject cookie",
+    "default_popup": "popup/popup.html"
+  }
+}

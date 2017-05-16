@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "change user-agent",
+  "version": "1.0",
+  "description": "Intercept Modify HTTP Request",
+
+  "applications": {
+    "gecko": {
+      "id": "singforcain@gmail.com"
+    }
+  },
+
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["background/requests.js"]
+  },
+  "browser_action": {
+    "default_icon": "icons/border-48.png",
+    "default_title": "Choose a user agent",
+    "default_popup": "popup/popup.html"
+  }
+}
