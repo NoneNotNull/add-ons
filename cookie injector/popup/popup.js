@@ -3,8 +3,8 @@
  */
 
 
-
 getActiveTab().then(getCookies);
+getActiveTab().then(getDomain);
 
 document.addEventListener("click",function (event) {
     if(event.target.classList.contains("removeAll")){
@@ -14,6 +14,16 @@ document.addEventListener("click",function (event) {
         getActiveTab().then(setCookies);
     }
 },false)
+
+function getDomain(tabs){
+    var url = tabs[0].url;
+    if(matches = url.match(/https?:\/\/(.*?)\/.*/i)){
+        url = matches[1];
+    }else{
+        url = "";
+    }
+    document.getElementsByTagName("label")[0].innerText = url;
+}
 
 
 function getActiveTab(){
@@ -40,6 +50,7 @@ function setCookies(tabs){
     for(var i=0;i<cookies.length;i++){
         ckname = cookies[i].split("=")[0];
         ckvalue = cookies[i].split("=")[1];
+        console.log(ckname,ckvalue);
         browser.cookies.set({
             url: tabs[0].url,
             name: ckname,
@@ -48,9 +59,6 @@ function setCookies(tabs){
     }
 }
 
-function removeCookie(){
-    // 删除键为name的cookie
-}
 
 function removeCookies(tabs){
     // 删除所有cookies
@@ -73,29 +81,22 @@ function getCookie() {
 function getCookies(tabs){
     // 获取所有cookies，返回JSON格式
     var getAllCookies = browser.cookies.getAll({url:tabs[0].url});
+    var cookiesString = "";
+    var tmpString = "";
     getAllCookies.then((cookies)=>{
         for (cookie of cookies){
             console.log(cookie.name,cookie.value);
-            // var nameTag = document.createElement("label");
-            // nameTag.innerText = cookie.name;
-            // var valueTag = document.createElement("input");
-            // valueTag.value = cookie.value;
-            // var saveTag = document.createElement("button");
-            // saveTag.setAttribute("type","button");
-            // saveTag.innerText = "Save";
-            // var deleteTag = document.createElement("button");
-            // deleteTag.setAttribute("type","button");
-            // deleteTag.innerText = "Delete";
-            // var divTag = document.createElement("div");
-            // divTag.appendChild(nameTag);
-            // divTag.appendChild(valueTag);
-            // divTag.appendChild(saveTag);
-            // divTag.appendChild(deleteTag);
-            // document.body.appendChild(divTag);
+            tmpString = cookie.name + "=" + cookie.value + ";";
+            cookiesString += tmpString;
         }
+        if(cookiesString){
+            cookiesString = cookiesString.substr(0,cookiesString.length - 1);
+        }
+        document.getElementsByClassName("ckInput")[0].value = cookiesString;
     });
 }
 
 function onRemoved(cookie){
+    document.getElementsByClassName("ckInput")[0].value = "";
     console.warn("Removed: " + cookie);
 }
